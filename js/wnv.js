@@ -41,3 +41,12 @@ function calcularIdade(data) {
     };
     document.getElementById('idade').innerHTML = age.years;
 }
+
+function disponivel() {
+    var hora = new Date();
+    if (hora.getHours() >= 8 && hora.getHours() <= 18) {
+        document.getElementById('trabalho').innerHTML = "<div style='color:rgb(252, 6, 6);'>Indisponível</div>";
+    } else {
+        document.getElementById('trabalho').innerHTML = "<div style='color:rgb(42, 240, 2);'>Disponível</div>";
+    }
+}
