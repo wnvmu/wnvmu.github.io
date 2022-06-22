@@ -40,9 +40,9 @@ function calcularIdade(data) {
 function disponivel() {
     var hora = new Date();
     if (hora.getHours() >= 8 && hora.getHours() <= 18) {
-        document.getElementById('trabalho').innerHTML = "<div style='color:rgb(252, 6, 6);'>Indisponível</div>";
+        document.getElementById('trabalho').innerHTML = "<div style='color:rgb(252, 6, 6);'>Indisponível</div> das 8h às 18h";
     } else {
-        document.getElementById('trabalho').innerHTML = "<div style='color:rgb(42, 240, 2);'>Disponível</div>";
+        document.getElementById('trabalho').innerHTML = "<div style='color:rgb(42, 240, 2);'>Disponível</div> das 18h às 22h";
     }
 }
 
