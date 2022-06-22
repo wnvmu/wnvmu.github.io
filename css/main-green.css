@@ -1423,7 +1423,7 @@ CURRICULUM
     padding: 2.2em 1.2em 1.5em;
     font-style: italic;
     border: 1px solid #e0e0e0;
-    border-top: 2px solid #2eca7f;
+    border-top: 2px solid #000000;
     width: 100%;
     position: relative;
     margin: 0;
@@ -1973,8 +1973,8 @@ CURRICULUM
 
 .testimonials.owl-carousel .owl-nav .owl-prev:hover,
 .testimonials.owl-carousel .owl-nav .owl-next:hover {
-    color: #fff;
-    background-color: #2eca7f;
+    color: rgb(255, 255, 255);
+    background-color: #000000;
 }
 
 .testimonials.owl-carousel .owl-nav .owl-prev:before,
