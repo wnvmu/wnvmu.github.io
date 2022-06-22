@@ -42,9 +42,9 @@ function disponivel() {
     let h = hora.getHours();
     let m = hora.getMinutes();
 
-    if ((h = 8 && m >= 00) && (h <= 18 && m <= 01)) {
+    if ((h => 8 && h <= 18) && (m <= 0)) {
         document.getElementById('trabalho').innerHTML = "<div style='color:rgb(252, 6, 6);'>Indisponível</div> das 8h às 18h";
-    } else if ((h = 18 && m >= 01) && (h <= 22 && m <= 01)) {
+    } else if ((h => 18 && h <= 22) && (m >= 0)) {
         document.getElementById('trabalho').innerHTML = "<div style='color:rgb(42, 240, 2);'>Disponível</div> das 18h às 22h";
     } else {
         document.getElementById('trabalho').innerHTML = "<div style='color:rgb(252, 6, 6);'>Indisponível</div>";
