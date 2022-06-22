@@ -38,11 +38,16 @@ function calcularIdade(data) {
 }
 
 function disponivel() {
-    var hora = new Date();
-    if (hora.getHours() >= 8 && hora.getHours() <= 18) {
+    const hora = new Date();
+    let h = hora.getHours();
+    let m = hora.getMinutes();
+
+    if ((h = 8 && m >= 00) && (h <= 18 && m <= 01)) {
         document.getElementById('trabalho').innerHTML = "<div style='color:rgb(252, 6, 6);'>Indisponível</div> das 8h às 18h";
-    } else {
+    } else if ((h = 18 && m >= 01) && (h <= 22 && m <= 01)) {
         document.getElementById('trabalho').innerHTML = "<div style='color:rgb(42, 240, 2);'>Disponível</div> das 18h às 22h";
+    } else {
+        document.getElementById('trabalho').innerHTML = "<div style='color:rgb(252, 6, 6);'>Indisponível</div>";
     }
 }
 
