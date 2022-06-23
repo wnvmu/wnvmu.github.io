@@ -2685,12 +2685,6 @@ blockquote .small {
     outline: none;
 }
 
-a:hover {
-    color: rgb(7, 175, 35);
-    text-decoration: none;
-    outline: none;
-}
-
 .fa-whatsapp {
     margin-top: 16px;
     text-decoration: none;
