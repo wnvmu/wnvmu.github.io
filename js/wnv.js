@@ -44,7 +44,7 @@ function disponivel() {
 
     if ((h => 8) && (h <= 17)) {
         document.getElementById('trabalho').innerHTML = "<div style='color:rgb(252, 6, 6);'>Indisponível</div> das 8h às 18h";
-    } else if ((h <= 22 && m >= 00)) {
+    } else if ((h <= 22)) {
         document.getElementById('trabalho').innerHTML = "<div style='color:rgb(42, 240, 2);'>Disponível</div> das 18h às 22h";
     } else {
         document.getElementById('trabalho').innerHTML = "<div style='color:rgb(252, 6, 6);'>Indisponível</div>";
