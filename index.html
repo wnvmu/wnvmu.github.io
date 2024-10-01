@@ -21,6 +21,7 @@
     <script src="js/jquery-2.1.3.min.js"></script>
     <script src="js/modernizr.custom.js"></script>
     <script type="text/javascript" src="js/wnv.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     <style>
     #google_translate_element {
@@ -34,7 +35,7 @@
 </head>
 
 <body class="material-template" onload="calcularIdade('08/01/1987'); disponivel(); temposervico('08/01/2005');">
-    <div id="google_translate_element" class="boxTradutor"></div>
+    <div id="google_translate_element"></div>
     <!-- Loading animation -->
     <div class="preloader">
         <div class="preloader-animation">
@@ -187,9 +188,9 @@
                                                 como Delphi. Estou constantemente em busca de novos desafios e oportunidades que me permitam aplicar minhas 
                                                 habilidades e contribuir para o avanço tecnológico.</p>
                                         </div>
-                                      <!--  <div class="download-resume">
-                                            <a href="cv/resume.pdf" class="btn btn-secondary" target="_blank">Download Currículo</a>
-                                        </div>-->
+                                        <div class="download-resume">
+                                            <button onclick="gerarCurriculoPDF()" class="btn btn-secondary">Download Currículo</button>
+                                        </div>
                                     </div>
 
                                     <div class="col-sm-6 col-md-6 col-lg-6">
@@ -1010,6 +1011,7 @@
     <script type="text/javascript" src="js/jquery.googlemap.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
     <script type="text/javascript" src="js/tradutor.js"></script>
+    <script type="text/javascript" src="js/CurriculoPDF.js"></script>
 </body>
 
 </html>

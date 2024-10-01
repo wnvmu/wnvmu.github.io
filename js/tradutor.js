@@ -1,14 +1,12 @@
    var comboGoogleTradutor = null; //Varialvel global
 
-    function googleTranslateElementInit() {
-        new google.translate.TranslateElement({
-            pageLanguage: 'pt',
-            includedLanguages: 'en,es',
-            layout: google.translate.TranslateElement.InlineLayout.HORIZONTAL
-        }, 'google_translate_element');
-
-        comboGoogleTradutor = document.getElementById("google_translate_element").querySelector(".goog-te-combo");
-    }
+   function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+        pageLanguage: 'pt',
+        includedLanguages: 'en,es,it',
+        layout: google.translate.TranslateElement.InlineLayout.HORIZONTAL
+    }, 'google_translate_element');
+}
 
     function changeEvent(el) {
         if (el.fireEvent) {
