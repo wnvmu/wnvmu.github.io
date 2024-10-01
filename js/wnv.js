@@ -40,16 +40,14 @@ function calcularIdade(data) {
 function disponivel() {
     const hora = new Date();
     let h = hora.getHours();
-    let m = hora.getMinutes();
 
-    if ((h => 8) && (h <= 17)) {
-        document.getElementById('trabalho').innerHTML = "<div style='color:rgb(252, 6, 6);'>Indisponível</div> das 8h às 18h";
-    } else if ((h <= 22)) {
+    if (h >= 18 && h < 22) {
         document.getElementById('trabalho').innerHTML = "<div style='color:rgb(42, 240, 2);'>Disponível</div> das 18h às 22h";
     } else {
         document.getElementById('trabalho').innerHTML = "<div style='color:rgb(252, 6, 6);'>Indisponível</div>";
     }
 }
+
 
 function temposervico(data) {
     var now = new Date();
