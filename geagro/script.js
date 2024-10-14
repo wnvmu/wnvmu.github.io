@@ -1,9 +1,11 @@
 function processFile() {
     const fileInput = document.getElementById('fileInput');
     const output = document.getElementById('output');
+    const outdados = document.getElementById('outdados');
 
     // Limpa a saída para cada nova leitura de arquivo
     output.innerHTML = '';
+    outdados.innerHTML = '';
 
     if (fileInput.files.length === 0) {
         alert('Por favor, selecione um arquivo SPED.');
@@ -18,10 +20,22 @@ function processFile() {
         const lines = fileContent.split('\n');
 
         let foundErrors = false;
+        let empresa = '';
+        let ano = '';
+        let versao = '';
 
         // Loop para verificar cada linha em busca de registros
         lines.forEach((line, index) => {
             const registroTipo = line.substring(1, 5); // Extraí o tipo de registro (ex: D100)
+
+            // Capture informações do registro '0000'
+            if (registroTipo === '0000') {
+                const fields = line.split('|'); // Separa os campos usando o delimitador "|"
+                empresa = fields[6].trim(); // Nome da empresa
+                ano = fields[4].substring(fields[4].length - 4); // Extraindo o ano da data de início (ex: 01082023 -> 2023)
+                versao = fields[2]; // O número de versão pode estar neste campo ou ajuste conforme necessário
+            }
+
             if (config.registros[registroTipo]) { // Verifica se o registro está configurado
                 const fields = line.split('|'); // Separa os campos usando o delimitador "|"
 
@@ -57,6 +71,15 @@ function processFile() {
                 }
             }
         });
+
+        // Exibe as informações da empresa, ano e versão
+        if (empresa || ano || versao) {
+            outdados.innerHTML = `
+                <br><strong>Versão SPED:</strong> ${versao}
+                <strong>Ano base:</strong> ${ano} 
+                <strong>Empresa:</strong> ${empresa}   
+            `;
+        }
 
         // Mensagem se não houver erros encontrados
         if (!foundErrors) {
