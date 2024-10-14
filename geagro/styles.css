@@ -1,0 +1,149 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%; /* Garante que o HTML e o body ocupem toda a altura da tela */
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    line-height: 1.6;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Alinhamento no topo */
+    overflow: hidden; /* Remove rolagem de corpo inteiro */
+}
+
+.container {
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    max-width: 100%; /* Define a largura máxima para 100% da tela */
+    width: 100%;
+    height: 100vh; /* Faz com que a caixa ocupe toda a altura visível da página */
+    display: flex;
+    flex-direction: column;
+}
+
+header h1 {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #008cba;
+}
+
+.file-section {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.file-label {
+    font-size: 18px;
+    color: #555;
+}
+
+.file-input {
+    margin-top: 10px;
+    padding: 10px;
+    border: 2px solid #008cba;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn {
+    display: inline-block;
+    background-color: #008cba;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #005f8d;
+}
+
+.output-section {
+    margin-top: 20px;
+    flex: 1; /* Permite que a área de saída expanda e ocupe o espaço restante */
+    display: flex;
+    flex-direction: column;
+}
+
+.output-section h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+#output {
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    padding: 15px;
+    flex: 1; /* Faz com que a área de saída ocupe todo o espaço disponível */
+    max-height: 400px; /* Define uma altura máxima para a área de saída */
+    overflow-y: auto; /* Adiciona rolagem se o conteúdo exceder a altura */
+    white-space: pre-wrap; /* Garante que o texto será quebrado para se ajustar ao tamanho da caixa */
+    word-wrap: break-word; /* Quebra o texto longo para evitar transbordo */
+    border-radius: 5px;
+}
+
+.record-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.expand-btn {
+    margin-right: 10px; /* Adiciona espaço entre o botão e o texto */
+    cursor: pointer;
+    background-color: #008cba;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.expand-btn:hover {
+    background-color: #005f8d;
+}
+
+.record {
+    margin-bottom: 10px; /* Diminui a margem entre os registros */
+    display: flex; /* Utiliza flexbox para facilitar o alinhamento */
+    flex-direction: column; /* Organiza os itens verticalmente */
+    justify-content: flex-start; /* Alinha o conteúdo ao topo */
+    overflow: hidden; /* Esconde o conteúdo que ultrapassa a altura definida */
+    transition: height 0.3s ease; /* Animação ao expandir */
+}
+
+.error-record {
+    color: red;
+    margin: 0; /* Remove o espaço em volta do texto */
+}
+
+.error {
+    border-left: 4px solid red;
+    padding-left: 10px;
+}
+
+.error-details {
+    background-color: #ffe5e5;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+    color: red;
+    font-size: 14px;
+    display: none; /* Inicialmente escondido */
+}
