@@ -32,7 +32,7 @@ function processFile() {
             if (registroTipo === '0000') {
                 const fields = line.split('|'); // Separa os campos usando o delimitador "|"
                 empresa = fields[6].trim(); // Nome da empresa
-                ano = fields[4].substring(fields[4].length - 4); // Extraindo o ano da data de início (ex: 01082023 -> 2023)
+                ano = fields[4].slice(-4); // Extraindo o ano da data de início (ex: 01082023 -> 2023)
                 versao = fields[2]; // O número de versão pode estar neste campo ou ajuste conforme necessário
             }
 

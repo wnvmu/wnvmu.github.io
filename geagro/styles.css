@@ -49,11 +49,7 @@ header h1 {
 }
 
 .file-input {
-    margin-top: 10px;
-    padding: 10px;
-    border: 2px solid #008cba;
-    border-radius: 5px;
-    cursor: pointer;
+    display: none; /* Esconde a entrada de arquivo */
 }
 
 .btn {
@@ -66,10 +62,27 @@ header h1 {
     cursor: pointer;
     margin-top: 10px;
     transition: background-color 0.3s ease;
+    position: relative; /* Para o efeito de antes */
+    font-size: 16px; /* Aumenta o tamanho da fonte para maior legibilidade */
 }
 
 .btn:hover {
     background-color: #005f8d;
+}
+
+.btn:focus {
+    outline: none; /* Remove o contorno padrão */
+}
+
+.btn::before {
+    content: '📁'; /* Adiciona um ícone de arquivo antes do texto do botão */
+    margin-right: 8px; /* Espaço entre o ícone e o texto */
+}
+
+.btn-container {
+    display: flex; /* Alinha os botões lado a lado */
+    justify-content: center; /* Centraliza os botões */
+    gap: 10px; /* Espaço entre os botões */
 }
 
 .output-section {

@@ -14,14 +14,15 @@
         
         <section class="file-section">
             <label for="fileInput" class="file-label">Selecione o arquivo SPED:</label>
-            <input type="file" id="fileInput" class="file-input" accept=".txt" />
-            <button class="btn" onclick="processFile()">Processar Arquivo</button>
+            <input type="file" id="fileInput" class="file-input" accept=".txt" onchange="processFile()" style="display: none;" />
+            <button class="btn" onclick="document.getElementById('fileInput').click();">Selecione o Arquivo</button>
         </section>
 
         <section class="output-section">
             <div style="display: inline;">
                 <h2 style="display: inline;">Informações do registro SPED:</h2>
-                <div Id="outdados" style="display: inline;"></div></div>
+                <div id="outdados" style="display: inline;"></div>
+            </div>
             <div id="output"></div> <!-- Div para exibir múltiplos registros -->
         </section>
     </div>
