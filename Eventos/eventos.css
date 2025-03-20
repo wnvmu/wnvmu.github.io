@@ -46,13 +46,13 @@ html, body{
 }
 
 #BC{
-    background-image: url('../images/BC.jpg');
+    background-image: url('images/BC.webp');
 }
 #DS{
-    background-image: url('../images/DS.jpg');
+    background-image: url('images/DS.webp');
 }
 #CC{
-    background-image: url('../images/CC.jpg');
+    background-image: url('images/CC.webp');
 }
 
 .titulo_evento {
