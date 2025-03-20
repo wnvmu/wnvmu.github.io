@@ -1,0 +1,89 @@
+html, body{
+    top: 0;
+    left: 0;
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+    width: 150px;
+    height: 200px;
+}
+
+.game-section{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 150px;
+    height: 200px;
+    gap: 0px;
+}
+
+.evento-container {
+    display: flex;
+    flex-wrap: wrap; /* Permite que os itens se ajustem se não houver espaço suficiente */
+    gap: 0px; /* Espaçamento entre os eventos */
+    justify-content: left; /* Garante que os eventos fiquem bem distribuídos */
+}
+
+.evento {
+    background-color: white;
+    border-radius: 0px;
+    padding: 0px;
+    width: 150px;
+    margin-bottom: 10px;
+    text-align: center;
+    border-bottom: 1px solid #f80000;
+}
+
+#BC, #DS, #CC {
+    background-position: left;
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    margin-left: 5px;
+    align-items: start;
+    justify-content: start;
+}
+
+#BC{
+    background-image: url('../images/BC.jpg');
+}
+#DS{
+    background-image: url('../images/DS.jpg');
+}
+#CC{
+    background-image: url('../images/CC.jpg');
+}
+
+.titulo_evento {
+    display: flex;
+    align-items: start;
+    justify-content: start;
+    gap: 5px;
+}
+
+    .titulo_evento img {
+        width: 20px;
+        height: auto;
+    }
+
+    .titulo_evento span {
+        font-size: 0.9rem;
+        font-weight: bold;
+        margin-left: 30px;
+        white-space: nowrap;
+    }
+
+.descricao_evento {
+    font-size: 0.9rem;
+    color: #020202;
+    font-weight: bold;
+}
+
+h2{
+    font-size: 1rem;
+    text-align: center;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 3px;
+}
