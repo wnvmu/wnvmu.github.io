@@ -35,26 +35,6 @@ html, body{
     border-bottom: 1px solid #f80000;
 }
 
-#BC, #DS, #CC {
-    background-position: left;
-    width: 20px;
-    height: 20px;
-    background-repeat: no-repeat;
-    margin-left: 5px;
-    align-items: start;
-    justify-content: start;
-}
-
-#BC{
-    background-image: url('images/BC.webp');
-}
-#DS{
-    background-image: url('images/DS.webp');
-}
-#CC{
-    background-image: url('images/CC.webp');
-}
-
 .titulo_evento {
     display: flex;
     align-items: start;
@@ -63,15 +43,14 @@ html, body{
 }
 
     .titulo_evento img {
-        width: 20px;
+        width: 30px;
         height: auto;
     }
 
     .titulo_evento span {
         font-size: 0.9rem;
         font-weight: bold;
-        margin-left: 30px;
-        white-space: nowrap;
+        margin-top: 5px;
     }
 
 .descricao_evento {
