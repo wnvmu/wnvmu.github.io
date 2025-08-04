@@ -6,11 +6,13 @@
     <OutputType>Exe</OutputType>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <EnableDefaultItems>false</EnableDefaultItems>
+	<EnableDefaultContentItems>false</EnableDefaultContentItems>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Content Include="**\*.*" Exclude="bin\**;obj\**;*.csproj" CopyToOutputDirectory="PreserveNewest" />
-  </ItemGroup>
+<ItemGroup>
+  <Content Include="index.html">
+    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  </Content>
+</ItemGroup>
 
 </Project>

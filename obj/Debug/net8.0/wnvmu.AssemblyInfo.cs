@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("wnvmu")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b8b56d366d1cadd56b13ace7d43bdbe22650f786")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8fda623fc74c920c3989d12132a7f071a07351b2")]
 [assembly: System.Reflection.AssemblyProductAttribute("wnvmu")]
 [assembly: System.Reflection.AssemblyTitleAttribute("wnvmu")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

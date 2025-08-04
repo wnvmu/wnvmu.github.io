@@ -2,11 +2,12 @@
   "profiles": {
     "wnvmu": {
       "commandName": "Project",
+      "dotnetRunMessages": true,
       "launchBrowser": true,
+      "applicationUrl": "http://localhost:8080",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "applicationUrl": "https://localhost:56559;http://localhost:56560"
+      }
     }
   }
 }
