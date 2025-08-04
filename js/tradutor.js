@@ -1,6 +1,8 @@
-   var comboGoogleTradutor = null; //Varialvel global
+// Variável global para armazenar referência ao combo do Google Tradutor
+var comboGoogleTradutor = null;
 
-   function googleTranslateElementInit() {
+// Inicializa o componente de tradução do Google
+function googleTranslateElementInit() {
     new google.translate.TranslateElement({
         pageLanguage: 'pt',
         includedLanguages: 'en,es,it',
@@ -8,20 +10,26 @@
     }, 'google_translate_element');
 }
 
-    function changeEvent(el) {
-        if (el.fireEvent) {
-            el.fireEvent('onchange');
-        } else {
-            var evObj = document.createEvent("HTMLEvents");
-
-            evObj.initEvent("change", false, true);
-            el.dispatchEvent(evObj);
-        }
+// Força o disparo do evento de "change" em um elemento
+function changeEvent(el) {
+    if (typeof Event === 'function') {
+        el.dispatchEvent(new Event("change"));
+    } else {
+        // Para navegadores mais antigos
+        var evObj = document.createEvent("HTMLEvents");
+        evObj.initEvent("change", false, true);
+        el.dispatchEvent(evObj);
     }
+}
 
-    function trocarIdioma(sigla) {
-        if (comboGoogleTradutor) {
-            comboGoogleTradutor.value = sigla;
-            changeEvent(comboGoogleTradutor);//Dispara a troca
-        }
+// Troca o idioma programaticamente (ex: "en", "es", "it")
+function trocarIdioma(idioma) {
+    var select = document.querySelector("select.goog-te-combo");
+
+    if (select) {
+        select.value = idioma;
+        changeEvent(select);
+    } else {
+        alert("O tradutor ainda não foi carregado.");
     }
+}

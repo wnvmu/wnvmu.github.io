@@ -1,0 +1,6 @@
+C:\wnvmu.github.io\obj\Debug\net8.0\wnvmu.GeneratedMSBuildEditorConfig.editorconfig
+C:\wnvmu.github.io\obj\Debug\net8.0\wnvmu.AssemblyInfoInputs.cache
+C:\wnvmu.github.io\obj\Debug\net8.0\wnvmu.AssemblyInfo.cs
+C:\wnvmu.github.io\obj\Debug\net8.0\wnvmu.csproj.CoreCompileInputs.cache
+C:\wnvmu.github.io\obj\Debug\net8.0\wnvmu.MvcApplicationPartsAssemblyInfo.cache
+C:\wnvmu.github.io\obj\Debug\net8.0\wnvmu.sourcelink.json
