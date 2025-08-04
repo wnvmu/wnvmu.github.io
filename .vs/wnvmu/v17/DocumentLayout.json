@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\wnvmu.github.io\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{03D76DF9-4CC5-474B-854C-87B1CD67B581}|wnvmu.csproj|c:\\wnvmu.github.io\\js\\curriculopdf.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{03D76DF9-4CC5-474B-854C-87B1CD67B581}|wnvmu.csproj|solutionrelative:js\\curriculopdf.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{03D76DF9-4CC5-474B-854C-87B1CD67B581}|wnvmu.csproj|c:\\wnvmu.github.io\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{03D76DF9-4CC5-474B-854C-87B1CD67B581}|wnvmu.csproj|solutionrelative:index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
@@ -31,12 +35,25 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "CurriculoPDF.js",
+              "DocumentMoniker": "C:\\wnvmu.github.io\\js\\CurriculoPDF.js",
+              "RelativeDocumentMoniker": "js\\CurriculoPDF.js",
+              "ToolTip": "C:\\wnvmu.github.io\\js\\CurriculoPDF.js",
+              "RelativeToolTip": "js\\CurriculoPDF.js",
+              "ViewState": "AgIAAHMAAAAAAAAAAAAAwI8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-08-04T20:02:31.12Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "index.html",
               "DocumentMoniker": "C:\\wnvmu.github.io\\index.html",
               "RelativeDocumentMoniker": "index.html",
               "ToolTip": "C:\\wnvmu.github.io\\index.html",
               "RelativeToolTip": "index.html",
-              "ViewState": "AgIAAHgCAAAAAAAAAAAAAIgCAAA/AAAAAAAAAA==",
+              "ViewState": "AgIAALEAAAAAAAAAAAAAAMUAAABOAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
               "WhenOpened": "2025-08-04T19:31:39.02Z",
               "EditorCaption": ""
