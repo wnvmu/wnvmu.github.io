@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Gestor Financeiro — CSV + Login (Electron)</title>
+  <title>Gestor Financeiro — CSV (GitHub Pages)</title>
   <link rel="stylesheet" href="app.css" />
 </head>
 <body>
@@ -20,7 +20,11 @@
       <div class="actions">
         <button class="btn primary" id="btnLogin">Entrar</button>
       </div>
-      <small>O CSV é salvo <strong>na mesma pasta</strong> do aplicativo (arquivo <code>&lt;usuario&gt;.csv</code>). Nenhum dado sai do seu computador.</small>
+      <small>
+        Esta versão é 100% estática para rodar no <strong>GitHub Pages</strong>.<br/>
+        O CSV é salvo no seu computador usando a <strong>File System Access API</strong>.<br/>
+        <em>Dica:</em> use <strong>Chrome/Edge (desktop)</strong>. No 1º uso será pedido para escolher/criar o arquivo <code>&lt;usuario&gt;.csv</code>.
+      </small>
     </div>
   </div>
 
@@ -36,28 +40,19 @@
     <div class="grid cols-3">
       <div class="card"><div class="body">
         <div class="kpi">
-          <div>
-            <div class="muted">Saldo projetado (30 dias)</div>
-            <strong id="kpiSaldo">R$ 0,00</strong>
-          </div>
+          <div><div class="muted">Saldo projetado (30 dias)</div><strong id="kpiSaldo">R$ 0,00</strong></div>
           <span class="pill" id="kpiSaldoTag">OK</span>
         </div>
       </div></div>
       <div class="card"><div class="body">
         <div class="kpi">
-          <div>
-            <div class="muted">A pagar (30 dias)</div>
-            <strong class="danger" id="kpiPagar">R$ 0,00</strong>
-          </div>
+          <div><div class="muted">A pagar (30 dias)</div><strong class="danger" id="kpiPagar">R$ 0,00</strong></div>
           <span class="pill warn">Atenção</span>
         </div>
       </div></div>
       <div class="card"><div class="body">
         <div class="kpi">
-          <div>
-            <div class="muted">A receber (30 dias)</div>
-            <strong class="success" id="kpiReceber">R$ 0,00</strong>
-          </div>
+          <div><div class="muted">A receber (30 dias)</div><strong class="success" id="kpiReceber">R$ 0,00</strong></div>
           <span class="pill ok">Entrada</span>
         </div>
       </div></div>
@@ -112,7 +107,10 @@
       <div class="card"><div class="body"><h2>Distribuição por categoria</h2><canvas id="chartPizza" height="220"></canvas></div></div>
     </div>
 
-    <div class="footer"><strong>App desktop (Electron):</strong> acesso direto ao disco — CSV gravado ao lado do app, com o nome do usuário.</div>
+    <div class="footer">
+      <strong>GitHub Pages:</strong> app estático; os dados ficam no seu CSV local via File System Access.<br/>
+      <em>Sem backend/servidor — nada sai do seu navegador.</em>
+    </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>

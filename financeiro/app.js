@@ -8,7 +8,8 @@
     editingId: null,
     charts: { fluxo:null, pizza:null },
     users: new Map(),
-    loggedUser: null
+    loggedUser: null,
+    fileHandle: null
   };
 
   const $ = sel => document.querySelector(sel);
@@ -61,27 +62,37 @@
     }
   }
 
-  // ---- Electron API ----
-  const api = window.fsAPI;
-
-  async function login(createOnMissing=false){
-    const u=($('#loginUser').value||'').trim(); const p=$('#loginPass').value||'';
-    if(!u || !p) return alert('Informe usuário e senha.');
-    const res = await api.login(u,p, createOnMissing);
-    if(!res.userOk) return alert('Usuário/senha inválidos.');
-    if(res.csv) importCSVText(res.csv);
-    state.loggedUser = u;
-    showApp();
+  // File System Access (Chrome/Edge desktop)
+  async function ensureFileHandle(user){
+    if(state.fileHandle) return state.fileHandle;
+    if(!window.showSaveFilePicker) throw new Error('Seu navegador não suporta File System Access. Use Chrome/Edge (desktop).');
+    state.fileHandle = await window.showSaveFilePicker({suggestedName: `${user}.csv`, types:[{description:'CSV', accept:{'text/csv':['.csv']}}]});
+    return state.fileHandle;
+  }
+  async function fsLoadOrCreate(user, pass, createIfMissing){
+    const handle = await ensureFileHandle(user);
+    const passHash = await sha256Hex(pass);
+    let text = '';
+    try{ const f = await handle.getFile(); text = await f.text(); }catch{ text=''; }
+    if(!text.trim()){
+      state.users = new Map([[user, passHash]]); state.saldoInicial=0; state.transacoes=[];
+      const w = await handle.createWritable(); await w.write(toCSV()); await w.close();
+      return {userOk:true, created:true};
+    }
+    importCSVText(text);
+    const savedHash = state.users.get(user);
+    if(!savedHash){
+      if(createIfMissing){ state.users.set(user, passHash); const w=await handle.createWritable(); await w.write(toCSV()); await w.close(); return {userOk:true, added:true}; }
+      return {userOk:false};
+    }
+    return {userOk: savedHash===passHash};
+  }
+  async function fsSave(){
+    const w = await state.fileHandle.createWritable();
+    await w.write(toCSV()); await w.close();
   }
 
-  async function saveToDisk(){
-    try{
-      await api.save(toCSV());
-      renderAll();
-    }catch(e){ alert(e.message||String(e)); }
-  }
-
-  // ---- UI/Render/Calc ----
+  // UI/Render
   function getFiltros(){ return { mes: $('#filtroMes').value, tipo: $('#filtroTipo').value, q: ($('#busca').value||'').toLowerCase(), status: $('#filtroStatus').value } }
   function filtrar(trans){
     const f = getFiltros();
@@ -171,7 +182,7 @@
     if(state.charts.fluxo) state.charts.fluxo.destroy();
     if(state.charts.pizza) state.charts.pizza.destroy();
     state.charts.fluxo=new Chart(ctx1,{ type:'bar', data:{ labels:p.labels, datasets:[{label:'A Receber', data:p.receber},{label:'A Pagar', data:p.pagar}] }, options:{ responsive:true, plugins:{ legend:{labels:{color:'#cbd5e1'}} }, scales:{ x:{ ticks:{color:'#94a3b8'}}, y:{ ticks:{color:'#94a3b8'} } } } });
-    state.charts.pizza=new Chart(ctx2,{ type:'pie', data:{ labels:dist.labels, datasets:[{ data:dist.data }] }, options:{ plugins:{ legend:{labels:{color:'#cbd5e1'}} } } });
+    state.charts.pizza=new Chart(ctx2,{ type:'pie', data:{ labels:dist.labels, datasets:[{ data:dist.data }] }, options:{ plugins:{ legend:{labels:{color:'#cbd5e1'} } } } });
   }
   function renderAll(){ renderTabela(); renderKPIs(); renderCharts(); }
 
@@ -232,6 +243,23 @@
   }
   function showApp(){ $('#auth').classList.add('hidden'); $('#app').classList.remove('hidden'); setupFiltros(); $('#saldoInicial').value=state.saldoInicial; bindApp(); renderAll(); }
 
-  // Boot login
-  document.getElementById('btnLogin').onclick = ()=> login(document.getElementById('loginCriar').checked);
+  async function saveToDisk(){
+    const w = await state.fileHandle.createWritable();
+    await w.write(toCSV());
+    await w.close();
+    renderAll();
+  }
+
+  // Login flow (pure static)
+  async function handleLogin(createOnMissing=false){
+    const u=($('#loginUser').value||'').trim(); const p=$('#loginPass').value||'';
+    if(!u || !p) return alert('Informe usuário e senha.');
+    try{
+      const res = await fsLoadOrCreate(u,p, createOnMissing);
+      if(!res.userOk) return alert('Usuário/senha inválidos.');
+      state.loggedUser = u;
+      showApp();
+    }catch(e){ alert(e.message||String(e)); }
+  }
+  document.getElementById('btnLogin').onclick = ()=> handleLogin(document.getElementById('loginCriar').checked);
 })();
