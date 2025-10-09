@@ -12,18 +12,26 @@
   <div id="auth">
     <div class="box">
       <h2>Entrar</h2>
-      <div class="row">
-        <div class="field"><label>Usuário</label><input id="loginUser" autocomplete="username"/></div>
-        <div class="field"><label>Senha</label><input id="loginPass" type="password" autocomplete="current-password"/></div>
-        <div class="field"><label><input type="checkbox" id="loginCriar"/> Criar usuário se não existir</label></div>
-      </div>
-      <div class="actions">
-        <button class="btn primary" id="btnLogin">Entrar</button>
-      </div>
+      <form id="loginForm" class="row">
+        <div class="field">
+          <label for="loginUser">Usuário</label>
+          <input id="loginUser" name="loginUser" autocomplete="username" required/>
+        </div>
+        <div class="field">
+          <label for="loginPass">Senha</label>
+          <input id="loginPass" name="loginPass" type="password" autocomplete="current-password" required/>
+        </div>
+        <div class="field">
+          <label><input type="checkbox" id="loginCriar"/> Criar usuário se não existir</label>
+        </div>
+        <div class="actions">
+          <button class="btn primary" id="btnLogin" type="submit">Entrar</button>
+        </div>
+      </form>
       <small>
-        Esta versão é 100% estática para rodar no <strong>GitHub Pages</strong>.<br/>
+        Versão 100% estática para rodar no <strong>GitHub Pages</strong>.<br/>
         O CSV é salvo no seu computador usando a <strong>File System Access API</strong>.<br/>
-        <em>Dica:</em> use <strong>Chrome/Edge (desktop)</strong>. No 1º uso será pedido para escolher/criar o arquivo <code>&lt;usuario&gt;.csv</code>.
+        <em>Use Chrome/Edge (desktop)</em>. No 1º uso será pedido para escolher/criar o arquivo <code>&lt;usuario&gt;.csv</code>.
       </small>
     </div>
   </div>
@@ -32,8 +40,8 @@
     <header>
       <h1>💰 Gestor Financeiro — Contas a Pagar/Receber</h1>
       <div class="actions">
-        <button class="btn" id="btnSalvarCSV">Salvar CSV</button>
-        <button class="btn primary" id="btnNovo">+ Nova Transação</button>
+        <button class="btn" id="btnSalvarCSV" type="button">Salvar CSV</button>
+        <button class="btn primary" id="btnNovo" type="button">+ Nova Transação</button>
       </div>
     </header>
 
@@ -90,14 +98,14 @@
           <div class="field" style="grid-column: span 3"><label>Categoria</label><input id="categoria" placeholder="Ex.: Moradia, Alimentação, Vendas"/></div>
         </div>
         <div class="row" style="margin-top:12px">
-          <div class="field"><button class="btn primary" id="btnSalvar">Salvar</button></div>
-          <div class="field"><button class="btn" id="btnLimpar">Limpar</button></div>
+          <div class="field"><button class="btn primary" id="btnSalvar" type="button">Salvar</button></div>
+          <div class="field"><button class="btn" id="btnLimpar" type="button">Limpar</button></div>
           <div class="field"><span class="muted" id="editHint"></span></div>
         </div>
         <div class="divider"></div>
         <div class="row">
           <div class="field"><label>Saldo inicial (R$)</label><input type="number" id="saldoInicial" step="0.01" placeholder="0,00" /></div>
-          <div class="field"><label>&nbsp;</label><button class="btn" id="btnAplicarSaldo">Aplicar saldo</button></div>
+          <div class="field"><label>&nbsp;</label><button class="btn" id="btnAplicarSaldo" type="button">Aplicar saldo</button></div>
         </div>
       </div></div>
     </div>

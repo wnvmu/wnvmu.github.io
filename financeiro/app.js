@@ -17,20 +17,21 @@
   const uid = ()=> Math.random().toString(36).slice(2)+Date.now().toString(36);
   const parseDateISO = v => v? new Date(v+'T00:00:00') : null;
   const monthKey = d => d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+
   async function sha256Hex(str){
     const buf = new TextEncoder().encode(str);
     const hash = await crypto.subtle.digest('SHA-256', buf);
     return [...new Uint8Array(hash)].map(b=>b.toString(16).padStart(2,'0')).join('');
   }
 
-  // CSV helpers
-  function csvEscape(v){ if(v==null) return ''; const s=String(v); return /[\",\\n]/.test(s)? '\"'+s.replace(/\"/g,'\"\"')+'\"' : s; }
+  // ---- CSV helpers ----
+  function csvEscape(v){ if(v==null) return ''; const s=String(v); return /[",\n]/.test(s)? '"' + s.replace(/"/g,'""') + '"' : s; }
   function parseCSVLine(line){
     const out=[]; let cur=''; let inQ=false;
     for(let i=0;i<line.length;i++){
       const ch=line[i];
-      if(inQ){ if(ch=='\"'){ if(line[i+1]=='\"'){ cur+='\"'; i++; } else { inQ=false; } } else { cur+=ch; } }
-      else { if(ch=='\"'){ inQ=true; } else if(ch===','){ out.push(cur); cur=''; } else { cur+=ch; } }
+      if(inQ){ if(ch==='"'){ if(line[i+1]==='"'){ cur+='"'; i++; } else { inQ=false; } } else { cur+=ch; } }
+      else { if(ch==='"'){ inQ=true; } else if(ch===','){ out.push(cur); cur=''; } else { cur+=ch; } }
     }
     out.push(cur); return out;
   }
@@ -44,11 +45,11 @@
       t.status||'pendente',t.recorrencia||'nenhuma',
       t.parcelas||1,t.parcelaAtual||1
     ].map(csvEscape).join(','));
-    return [meta, ...users, header, ...rows].join('\\n');
+    return [meta, ...users, header, ...rows].join('\n');
   }
   function importCSVText(text){
     state.users.clear(); state.saldoInicial=0; state.transacoes=[];
-    const lines = text.split(/\\r?\\n/).filter(l=>l.trim().length);
+    const lines = text.split(/\r?\n/).filter(l=>l.trim().length);
     let mode='meta'; let headerRead=false;
     for(const line of lines){
       if(line.startsWith('__META__')){ const p=parseCSVLine(line); const v=Number(p[2]||0); if(!Number.isNaN(v)) state.saldoInicial=v; continue; }
@@ -62,16 +63,19 @@
     }
   }
 
-  // File System Access (Chrome/Edge desktop)
+  // ---- File System Access ----
   async function ensureFileHandle(user){
     if(state.fileHandle) return state.fileHandle;
     if(!window.showSaveFilePicker) throw new Error('Seu navegador não suporta File System Access. Use Chrome/Edge (desktop).');
-    state.fileHandle = await window.showSaveFilePicker({suggestedName: `${user}.csv`, types:[{description:'CSV', accept:{'text/csv':['.csv']}}]});
+    state.fileHandle = await window.showSaveFilePicker({
+      suggestedName: `${user}.csv`,
+      types:[{description:'CSV', accept:{'text/csv':['.csv']}}]
+    });
     return state.fileHandle;
   }
   async function fsLoadOrCreate(user, pass, createIfMissing){
     const handle = await ensureFileHandle(user);
-    const passHash = await sha256Hex(pass);
+    const passHash = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pass)).then(buf => [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join(''));
     let text = '';
     try{ const f = await handle.getFile(); text = await f.text(); }catch{ text=''; }
     if(!text.trim()){
@@ -92,7 +96,7 @@
     await w.write(toCSV()); await w.close();
   }
 
-  // UI/Render
+  // ---- UI / Tabela / KPIs / Charts ----
   function getFiltros(){ return { mes: $('#filtroMes').value, tipo: $('#filtroTipo').value, q: ($('#busca').value||'').toLowerCase(), status: $('#filtroStatus').value } }
   function filtrar(trans){
     const f = getFiltros();
@@ -110,7 +114,8 @@
     const rows = filtrar(state.transacoes);
     const tb = $('#tbody'); tb.innerHTML='';
     for(const t of rows){
-      const tr = document.createElement('tr'); const d = parseDateISO(t.dataISO);
+      const tr = document.createElement('tr');
+      const d = parseDateISO(t.dataISO);
       tr.innerHTML = `
         <td>${d.toLocaleDateString('pt-BR')}</td>
         <td>${t.tipo==='PAGAR'? 'Pagar' : 'Receber'}</td>
@@ -186,7 +191,7 @@
   }
   function renderAll(){ renderTabela(); renderKPIs(); renderCharts(); }
 
-  // CRUD
+  // ---- CRUD ----
   function addOrUpdateTransacao(data){
     if(state.editingId){
       const i=state.transacoes.findIndex(t=>t.id===state.editingId);
@@ -220,7 +225,7 @@
   }
   function clearForm(){ state.editingId=null; $('#tipo').value='PAGAR'; $('#data').value=''; $('#valor').value=''; $('#descricao').value=''; $('#categoria').value=''; $('#status').value='pendente'; $('#recorrencia').value='nenhuma'; $('#parcelas').value='1'; $('#editHint').textContent=''; renderAll(); }
 
-  // Filtros/Bind
+  // ---- Filtros/Bind ----
   function setupFiltros(){
     const sel=$('#filtroMes'); sel.innerHTML='';
     const optAll=document.createElement('option'); optAll.value=''; optAll.textContent='Todos os meses'; sel.appendChild(optAll);
@@ -245,12 +250,11 @@
 
   async function saveToDisk(){
     const w = await state.fileHandle.createWritable();
-    await w.write(toCSV());
-    await w.close();
+    await w.write(toCSV()); await w.close();
     renderAll();
   }
 
-  // Login flow (pure static)
+  // ---- Login flow (pure static) ----
   async function handleLogin(createOnMissing=false){
     const u=($('#loginUser').value||'').trim(); const p=$('#loginPass').value||'';
     if(!u || !p) return alert('Informe usuário e senha.');
@@ -261,5 +265,10 @@
       showApp();
     }catch(e){ alert(e.message||String(e)); }
   }
-  document.getElementById('btnLogin').onclick = ()=> handleLogin(document.getElementById('loginCriar').checked);
+
+  // Submit login form without page refresh
+  document.getElementById('loginForm').addEventListener('submit', (ev)=>{
+    ev.preventDefault();
+    handleLogin(document.getElementById('loginCriar').checked);
+  });
 })();
