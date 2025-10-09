@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gestor Financeiro — CSV + Login (Electron)</title>
+  <link rel="stylesheet" href="app.css" />
+</head>
+<body>
+
+  <!-- LOGIN -->
+  <div id="auth">
+    <div class="box">
+      <h2>Entrar</h2>
+      <div class="row">
+        <div class="field"><label>Usuário</label><input id="loginUser" autocomplete="username"/></div>
+        <div class="field"><label>Senha</label><input id="loginPass" type="password" autocomplete="current-password"/></div>
+        <div class="field"><label><input type="checkbox" id="loginCriar"/> Criar usuário se não existir</label></div>
+      </div>
+      <div class="actions">
+        <button class="btn primary" id="btnLogin">Entrar</button>
+      </div>
+      <small>O CSV é salvo <strong>na mesma pasta</strong> do aplicativo (arquivo <code>&lt;usuario&gt;.csv</code>). Nenhum dado sai do seu computador.</small>
+    </div>
+  </div>
+
+  <div class="container hidden" id="app">
+    <header>
+      <h1>💰 Gestor Financeiro — Contas a Pagar/Receber</h1>
+      <div class="actions">
+        <button class="btn" id="btnSalvarCSV">Salvar CSV</button>
+        <button class="btn primary" id="btnNovo">+ Nova Transação</button>
+      </div>
+    </header>
+
+    <div class="grid cols-3">
+      <div class="card"><div class="body">
+        <div class="kpi">
+          <div>
+            <div class="muted">Saldo projetado (30 dias)</div>
+            <strong id="kpiSaldo">R$ 0,00</strong>
+          </div>
+          <span class="pill" id="kpiSaldoTag">OK</span>
+        </div>
+      </div></div>
+      <div class="card"><div class="body">
+        <div class="kpi">
+          <div>
+            <div class="muted">A pagar (30 dias)</div>
+            <strong class="danger" id="kpiPagar">R$ 0,00</strong>
+          </div>
+          <span class="pill warn">Atenção</span>
+        </div>
+      </div></div>
+      <div class="card"><div class="body">
+        <div class="kpi">
+          <div>
+            <div class="muted">A receber (30 dias)</div>
+            <strong class="success" id="kpiReceber">R$ 0,00</strong>
+          </div>
+          <span class="pill ok">Entrada</span>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="grid cols-2" style="margin-top:16px">
+      <div class="card"><div class="body">
+        <h2>Transações</h2>
+        <div class="row" style="margin-bottom:8px">
+          <div class="field"><select id="filtroMes"></select></div>
+          <div class="field"><select id="filtroTipo"><option value="">Todos os tipos</option><option value="PAGAR">A Pagar</option><option value="RECEBER">A Receber</option></select></div>
+          <div class="field" style="grid-column: span 2"><input id="busca" placeholder="Buscar descrição/categoria"/></div>
+          <div class="field"><select id="filtroStatus"><option value="">Todos status</option><option>pendente</option><option>concluida</option></select></div>
+        </div>
+        <div style="max-height:360px; overflow:auto">
+          <table>
+            <thead><tr><th>Data</th><th>Tipo</th><th>Descrição</th><th>Categoria</th><th class="right">Valor</th><th>Status</th><th>Recorrência</th><th></th></tr></thead>
+            <tbody id="tbody"></tbody>
+          </table>
+        </div>
+      </div></div>
+
+      <div class="card"><div class="body">
+        <h2>Cadastro / Edição</h2>
+        <div class="row">
+          <div class="field"><label>Tipo</label><select id="tipo"><option value="PAGAR">A Pagar</option><option value="RECEBER">A Receber</option></select></div>
+          <div class="field"><label>Data (venc./prev.)</label><input type="date" id="data" /></div>
+          <div class="field"><label>Valor (R$)</label><input type="number" id="valor" step="0.01" min="0" placeholder="0,00" /></div>
+          <div class="field"><label>Status</label><select id="status"><option>pendente</option><option>concluida</option></select></div>
+          <div class="field"><label>Recorrência</label><select id="recorrencia"><option value="nenhuma">Nenhuma</option><option value="mensal">Mensal</option></select></div>
+          <div class="field"><label>Parcelas (se houver)</label><input type="number" id="parcelas" min="1" value="1" /></div>
+        </div>
+        <div class="row" style="margin-top:10px">
+          <div class="field" style="grid-column: span 3"><label>Descrição</label><input id="descricao" placeholder="Ex.: Aluguel, Salário, Cartão"/></div>
+          <div class="field" style="grid-column: span 3"><label>Categoria</label><input id="categoria" placeholder="Ex.: Moradia, Alimentação, Vendas"/></div>
+        </div>
+        <div class="row" style="margin-top:12px">
+          <div class="field"><button class="btn primary" id="btnSalvar">Salvar</button></div>
+          <div class="field"><button class="btn" id="btnLimpar">Limpar</button></div>
+          <div class="field"><span class="muted" id="editHint"></span></div>
+        </div>
+        <div class="divider"></div>
+        <div class="row">
+          <div class="field"><label>Saldo inicial (R$)</label><input type="number" id="saldoInicial" step="0.01" placeholder="0,00" /></div>
+          <div class="field"><label>&nbsp;</label><button class="btn" id="btnAplicarSaldo">Aplicar saldo</button></div>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="grid cols-2" style="margin-top:16px">
+      <div class="card"><div class="body"><h2>Projeção 12 meses</h2><canvas id="chartFluxo" height="220"></canvas></div></div>
+      <div class="card"><div class="body"><h2>Distribuição por categoria</h2><canvas id="chartPizza" height="220"></canvas></div></div>
+    </div>
+
+    <div class="footer"><strong>App desktop (Electron):</strong> acesso direto ao disco — CSV gravado ao lado do app, com o nome do usuário.</div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
