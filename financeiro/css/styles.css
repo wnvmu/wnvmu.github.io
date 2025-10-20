@@ -93,84 +93,78 @@ input:focus,select:focus{border-color:var(--primary)}
 .list-compact .list-item { display:flex; align-items:center; justify-content:space-between; padding:6px 10px; border:1px solid var(--line, #2a2f3a); border-radius:8px; }
 .list-compact .list-item .actions { display:flex; gap:6px; }
 
-/* ==== MOBILE TUNING (Galaxy S24 / telas <= 430px) ==== */
+/* ===== MOBILE S24 (<= 430px) ===== */
 @media (max-width: 430px) {
   html, body { font-size: 15px; }
 
-  .app-header{
-    padding: 10px 12px;
-    gap: 8px;
-    position: sticky; top: 0; z-index: 20;
-  }
-  .brand{ font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
+  .app-header{ padding: 10px 12px; gap: 8px; flex-wrap: wrap; }
+  .brand{ font-size: 14px; }
   .btn{ min-height: 40px; padding: 8px 12px; font-size: 14px; }
-  .btn--ghost{ border-style: dashed; }
 
   .layout{ grid-template-columns: 1fr; gap: 12px; padding: 12px; }
   .panel{ padding: 12px; }
 
-  /* KPIs: 2 colunas (melhor uso de altura); em telas muito estreitas cai pra 1 */
-  .kpis{ grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 8px; }
+  .kpis{ grid-template-columns: 1fr 1fr; gap: 8px; }
   .kpi{ padding: 10px; border-radius: 10px; }
   .kpi-title{ font-size: 11px; }
   .kpi-value{ font-size: 18px; }
 
-  /* Gráfico mais baixo para caber na dobra */
   .chart-wrap{ height: 170px; }
 
-  /* Toolbar e filtro */
-  .toolbar{
-    flex-wrap: wrap;
-    gap: 8px;
-    margin: 10px 0;
-  }
-  .toolbar input[type="text"],
-  #filtro{ width: 100%; min-width: 0; }
+  .toolbar{ flex-wrap: wrap; gap: 8px; }
+  #filtro{ width: 100%; }
 
-  /* Form grids mais lineares */
   .grid--4, .grid--2{ grid-template-columns: 1fr; }
   .grid-row-actions{ flex-wrap: wrap; gap: 8px; }
 
-  /* Modal/Dialog realmente responsivo */
+  /* Modal responsivo */
   .dialog-body{
-    min-width: 0;                 /* remove o gargalo 520px */
-    width: 92vw;                  /* ocupa a largura da tela */
-    max-width: 520px;             /* mas não passa disso quando der */
-    max-height: 85vh;             /* cabe na tela */
-    overflow: auto;               /* scroll interno */
+    min-width: 0;
+    width: 92vw;
+    max-height: 85vh;
+    overflow: auto;
     padding: 14px;
     border-radius: 14px;
   }
-  .dialog::backdrop{ background: rgba(0,0,0,.55); }
 
-  /* Lists dentro do Config mais compactas */
-  .list-compact{ max-height: 40vh; gap: 6px; }
-  .list-compact .list-item{ padding: 6px 8px; }
+  /* Tabela empilhada em "cards" */
+  .table-wrap{ overflow: visible; }
+  .table{ width: 100%; border: 0; }
+  .table thead{ display: none; }
+  .table tbody tr{
+    display: block;
+    margin: 10px 0;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: #0f1729;
+  }
+  .table tbody td{
+    display: flex;
+    gap: 8px;
+    justify-content: space-between;
+    padding: 10px 12px;
+    border: 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .table tbody td:last-child{ border-bottom: 0; }
+  .table tbody td::before{
+    content: attr(data-label);
+    color: var(--muted);
+    font-weight: 600;
+    margin-right: 12px;
+  }
 
-  /* Tabela: rolagem horizontal + fontes compactas */
-  .table-wrap{ overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  .table{ min-width: 720px; } /* impede quebrar demais; rola lateralmente */
-  .table th, .table td{ padding: 8px 6px; font-size: 13px; }
-
-  /* Oculta colunas menos críticas em telas estreitas:
-     7=Documento, 10=Parcela, 12=Obs  */
-  .table th:nth-child(7), .table td:nth-child(7),
-  .table th:nth-child(10), .table td:nth-child(10),
-  .table th:nth-child(12), .table td:nth-child(12) { display: none; }
-
-  /* Botões de ação da tabela com mais espaço de toque */
-  .table .actions{ gap: 4px; }
-  .table .actions .btn{ min-height: 36px; padding: 6px 8px; }
+  /* Ações no rodapé do card */
+  .table .actions{
+    justify-content: flex-end;
+    gap: 6px;
+  }
+  .table .actions .btn{
+    min-height: 36px; padding: 6px 10px;
+  }
 }
 
-/* Telas muito estreitas (<=360px): KPIs em 1 coluna e gráfico ainda menor */
-@media (max-width: 360px) {
-  .kpis{ grid-template-columns: 1fr; }
-  .chart-wrap{ height: 150px; }
-}
-
-/* Melhorias gerais de toque e foco em mobile */
+/* extra: evita zoom automático ao focar inputs no mobile */
+input, select, button { font-size: 16px; }
 * { -webkit-tap-highlight-color: transparent; }
-input, select, button { font-size: 16px; } /* evita zoom automático no iOS/Android */
-

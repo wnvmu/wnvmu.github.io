@@ -1,7 +1,7 @@
 // app.js (versão corrigida)
 import { ensureDirHandle, readTextFileIfExists, writeTextFile, toCSV, parseCSV, moedaBR, debounce } from './utils.js';
 
-const cpf = sessionStorage.getItem('cpf');
+const cpf = localStorage.getItem('cpf') || sessionStorage.getItem('cpf');
 if (!cpf) location.href = 'index.html';
 
 // ===== Elementos principais =====
@@ -43,7 +43,7 @@ const salCancelar = document.getElementById('salCancelar');
 btnSalario?.addEventListener('click', (e) => {
   e.preventDefault(); // importante pois btn está dentro do formConfig
   // popular contas no select do salário, se precisar:
-  setSelectOptions(document.getElementById('salConta'), config.contas || []);
+ setSelectOptions(document.getElementById('salConta'), config.contas || []);
   if (dlgSalario && !dlgSalario.open) dlgSalario.showModal();
 });
 salCancelar?.addEventListener('click', () => { dlgSalario?.close(); });
@@ -503,7 +503,12 @@ btnNovoLancamento?.addEventListener('click', () => {
 });
 
 // Trocar usuário
-btnTrocarUsuario?.addEventListener('click', () => { sessionStorage.removeItem('cpf'); location.href = 'index.html'; });
+btnTrocarUsuario.addEventListener('click', () => {
+  localStorage.removeItem('cpf');
+  sessionStorage.removeItem('cpf');
+  location.href = 'index.html';
+});
+
 
 // Maiúsculas nos inputs de texto
 document.addEventListener('input', (e) => {
