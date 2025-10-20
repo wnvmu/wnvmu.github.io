@@ -350,7 +350,7 @@ const autoSave = debounce(async () => { await saveCSV(); }, 700);
 async function loadCSV() {
   const filename = `${cpf}.csv`;
   const dirBd = await ensureDirHandle(true);
-  const text = await readTextFileIfExists(dir, filename);
+  const text = await readTextFileIfExists(dirBd, filename);
   
   if (!text) {
     const dirRoot = await ensureDirHandle(false);
