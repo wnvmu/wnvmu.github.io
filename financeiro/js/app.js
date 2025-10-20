@@ -39,6 +39,79 @@ const addCategoria = document.getElementById('addCategoria');
 const btnSalario = document.getElementById('btnSalario');
 const dlgSalario = document.getElementById('dlgSalario');
 const salCancelar = document.getElementById('salCancelar');
+const formSalario  = document.getElementById('formSalario');
+
+btnSalario?.addEventListener('click', () => {
+  ensureCategoriaSalario();
+  fillSalConta();
+  if (!dlgSalario.open) dlgSalario.showModal();
+});
+
+// botão cancelar SEM validar campos
+salCancelar?.addEventListener('click', (e) => {
+  e.preventDefault(); // garante que não tente submeter
+  dlgSalario?.close();
+});
+
+// cria lançamentos recorrentes ao submeter
+formSalario?.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const dia      = Math.max(1, Math.min(31, parseInt(document.getElementById('salDia').value || '1', 10)));
+  const valor    = parseFloat(document.getElementById('salValor').value || '0');
+  const conta    = (document.getElementById('salConta').value || '').toUpperCase();
+  const forma    = (document.getElementById('salForma').value || '').toUpperCase();
+  const empresa  = (document.getElementById('salEmpresa').value || '').toUpperCase().trim();
+  const qtd      = Math.max(1, parseInt(document.getElementById('salQtdMeses').value || '12', 10));
+
+  if (!valor || !conta) return; // mantém validação mínima
+
+  const now = new Date();
+  const startYear  = now.getFullYear();
+  const startMonth = now.getMonth(); // 0..11
+
+  for (let i = 0; i < qtd; i++) {
+    const base = new Date(startYear, startMonth + i, 1);
+    const lastDay = new Date(base.getFullYear(), base.getMonth() + 1, 0).getDate();
+    const day = Math.min(dia, lastDay);
+    const dt  = new Date(base.getFullYear(), base.getMonth(), day);
+
+    const yyyy = dt.getFullYear();
+    const mm   = String(dt.getMonth() + 1).padStart(2, '0');
+    const dd   = String(dt.getDate()).padStart(2, '0');
+
+    const dataStr = `${yyyy}-${mm}-${dd}`;
+    const desc = `SALÁRIO ${empresa ? (empresa + ' ') : ''}${mm}/${yyyy}`.toUpperCase();
+
+    lancamentos.push({
+      date: dataStr,
+      vencimento: dataStr,
+      type: 'RECEITA',
+      descricao: desc,
+      conta: conta,
+      categoria: 'SALÁRIO',
+      documento: 'HOLERITE',
+      forma: forma,
+      valor: Number(valor),
+      parcela: '1/1',
+      status: 'ABERTO',     // deixe ABERTO; quando marcar PAGO/RECEBIDO, entra no saldo
+      obs: ''
+    });
+  }
+
+  // salva e atualiza UI
+  try { applyFilter(); } catch {}
+  try { recalcKPIs(); } catch {}
+  try { renderChart(); } catch {}
+  try {
+    if (typeof autoSave === 'function') autoSave();
+    else if (typeof saveCSV === 'function') saveCSV();
+  } catch {}
+
+  // fecha modal e limpa
+  dlgSalario?.close();
+  formSalario.reset();
+});
 
 btnSalario?.addEventListener('click', (e) => {
   e.preventDefault(); // importante pois btn está dentro do formConfig
@@ -46,7 +119,7 @@ btnSalario?.addEventListener('click', (e) => {
  setSelectOptions(document.getElementById('salConta'), config.contas || []);
   if (dlgSalario && !dlgSalario.open) dlgSalario.showModal();
 });
-salCancelar?.addEventListener('click', () => { dlgSalario?.close(); });
+
 
 // ===== Estado =====
 let lancamentos = [];
