@@ -46,7 +46,6 @@ form.addEventListener('submit', async (e) => {
     const hash = await sha256(senha);
     if (hash !== hashCSV) return showMsg(msg, 'Senha incorreta.');
 
-    // após autenticar:
     localStorage.setItem('cpf', cpf);
     sessionStorage.setItem('cpf', cpf);
     location.href = 'app.html';
