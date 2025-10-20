@@ -43,7 +43,7 @@ const salCancelar = document.getElementById('salCancelar');
 btnSalario?.addEventListener('click', (e) => {
   e.preventDefault(); // importante pois btn está dentro do formConfig
   // popular contas no select do salário, se precisar:
-  // setSelectOptions(document.getElementById('salConta'), config.contas || []);
+  setSelectOptions(document.getElementById('salConta'), config.contas || []);
   if (dlgSalario && !dlgSalario.open) dlgSalario.showModal();
 });
 salCancelar?.addEventListener('click', () => { dlgSalario?.close(); });
