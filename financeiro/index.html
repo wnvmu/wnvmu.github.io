@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login • Contas a Pagar/Receber</title>
+  <link rel="stylesheet" href="css/styles.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="login-body">
+  <main class="card card--auth">
+    <h1>Contas a Pagar / Receber</h1>
+    <p class="muted">Faça login com seu CPF e senha. Os dados ficam em um arquivo CSV nomeado pelo CPF.</p>
+
+    <form id="loginForm">
+      <label>CPF
+        <input type="text" id="cpf" placeholder="000.000.000-00" autocomplete="username" required>
+      </label>
+      <label>Senha
+        <input type="password" id="senha" placeholder="••••••••" autocomplete="current-password" required>
+      </label>
+
+      <div class="row">
+        <button type="submit" class="btn btn--primary">Entrar</button>
+        <button type="button" id="btnNovaConta" class="btn">Criar nova conta</button>
+      </div>
+
+      <div class="row">
+        <button type="button" id="btnDefinirPasta" class="btn btn--ghost">Definir/Alterar pasta de dados…</button>
+      </div>
+    </form>
+
+    <div id="msg" class="msg"></div>
+
+    <footer class="muted small">
+      <strong>Importante:</strong> este sistema usa a <em>File System Access API</em> do navegador
+      para criar e ler arquivos CSV locais (Chrome/Edge no desktop).
+    </footer>
+  </main>
+
+  <!-- Modal de criação de conta -->
+  <dialog id="dlgSignup" class="dialog">
+    <form method="dialog" id="signupForm" class="dialog-body">
+      <h2>Criar nova conta</h2>
+      <div class="grid grid--2">
+        <label>CPF
+          <input type="text" id="s_cpf" placeholder="000.000.000-00" required>
+        </label>
+        <label>Nome
+          <input type="text" id="s_nome" placeholder="Seu nome completo">
+        </label>
+        <label>E-mail
+          <input type="email" id="s_email" placeholder="voce@exemplo.com">
+        </label>
+        <label>Senha
+          <input type="password" id="s_senha" required>
+        </label>
+        <label>Repetir senha
+          <input type="password" id="s_senha2" required>
+        </label>
+      </div>
+      <div class="row right">
+        <button value="cancel" class="btn">Cancelar</button>
+        <button id="btnCriar" class="btn btn--primary">Criar</button>
+      </div>
+      <p id="signupMsg" class="msg"></p>
+    </form>
+  </dialog>
+
+  <script type="module" src="js/login.js"></script>
+</body>
+</html>

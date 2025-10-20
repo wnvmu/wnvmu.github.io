@@ -1,0 +1,94 @@
+/* Minimal, clean UI (v2) */
+:root{
+  --bg:#0b0f15;
+  --card:#121826;
+  --muted:#8aa0b6;
+  --fg:#e8f0fa;
+  --primary:#4f7cff;
+  --ok:#18c29c;
+  --warn:#ffd166;
+  --bad:#ef476f;
+  --border:#24324a;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;
+  background:linear-gradient(180deg,#0b0f15 0,#0b1220 100%);
+  color:var(--fg);
+}
+
+.login-body{display:grid;place-items:center;padding:24px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;max-width:680px;width:100%;box-shadow:0 10px 30px rgba(0,0,0,.3)}
+.card--auth h1{margin:0 0 8px}
+.card--auth .row{display:flex;gap:12px;margin-top:8px}
+.muted{color:var(--muted)}
+.small{font-size:12px}
+
+label{color: #fff; display:flex;flex-direction:column;gap:6px;margin-top:12px}
+input,select{
+  background:#0e1524;border:1px solid var(--border);border-radius:10px;
+  padding:10px 12px;color:var(--fg);outline:none;
+}
+input:focus,select:focus{border-color:var(--primary)}
+
+.btn{background:#1a2236;color:var(--fg);border:1px solid var(--border);padding:10px 14px;border-radius:10px;cursor:pointer}
+.btn:hover{filter:brightness(1.1)}
+.btn--primary{background:var(--primary);border-color:transparent;color:white}
+.btn--ghost{background:transparent;border:1px dashed var(--border)}
+
+.msg{margin-top:12px;min-height:20px}
+.msg--error{color:var(--bad)}
+.msg--ok{color:var(--ok)}
+
+.app-header{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(11,15,21,.8);backdrop-filter:blur(6px)}
+.brand{font-weight:700}
+
+.layout{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:16px}
+.layout--2cols .panel--full{grid-column:1/-1}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:12px}
+.kpi{background:#0f1729;border:1px solid var(--border);border-radius:12px;padding:12px}
+.kpi-title{color:var(--muted);font-size:12px}
+.kpi-value{font-size:22px;font-weight:700}
+.chart-wrap{height:240px}
+
+.grid{display:grid;gap:10px}
+.grid--2{grid-template-columns:1fr 1fr}
+.grid--4{grid-template-columns:repeat(4,1fr)}
+.grid-row-actions{grid-column:1/-1;display:flex;gap:10px;align-items:center;justify-content:flex-start}
+.row{display:flex;gap:10px;align-items:center}
+.row.right{justify-content:flex-end}
+
+.toolbar{display:flex;justify-content:space-between;align-items:center;margin:12px 0}
+.table{width:100%;border-collapse:collapse;border:1px solid var(--border)}
+.table th,.table td{border-bottom:1px solid var(--border);padding:8px;text-align:left;font-size:14px}
+.table tr:hover{background:#0e1524}
+.table .actions{display:flex;gap:6px}
+.table td:nth-child(1),
+.table td:nth-child(2),
+.table td:nth-child(9) { white-space: nowrap; }
+
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}
+.chip{background:#0f1729;border:1px solid var(--border);border-radius:999px;padding:6px 10px;display:inline-flex;gap:8px;align-items:center}
+.chip button{border:none;background:transparent;color:var(--muted);cursor:pointer}
+
+.dialog{border:none;border-radius:16px;padding:0;background:transparent}
+.dialog::backdrop{background:rgba(0,0,0,.6);backdrop-filter:blur(2px)}
+.dialog-body{color: #fff; background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;min-width:520px}
+
+@media (max-width: 1100px){
+  .layout{grid-template-columns:1fr}
+  .grid--4{grid-template-columns:1fr 1fr}
+  .grid--2{grid-template-columns:1fr}
+  .chart-wrap{height:200px}
+}
+
+#dlgConfig input { height: 34px; padding: 6px 10px; font-size: 13px; }
+
+/* list compact in Config modal */
+.list-compact { display: grid; grid-template-columns: 1fr; gap: 6px; max-height: 220px; overflow: auto; }
+.list-compact .list-item { display:flex; align-items:center; justify-content:space-between; padding:6px 10px; border:1px solid var(--line, #2a2f3a); border-radius:8px; }
+.list-compact .list-item .actions { display:flex; gap:6px; }

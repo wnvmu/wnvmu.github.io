@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard • Contas a Pagar/Receber</title>
+  <link rel="stylesheet" href="css/styles.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand">💼 Contas a Pagar / Receber</div>
+    <div class="spacer"></div>
+    <button id="btnTrocarUsuario" class="btn">Trocar usuário</button>
+    <button id="btnConfig" class="btn btn--ghost">Configurações…</button>
+  </header>
+
+  <main class="layout layout--2cols">
+    <section class="panel panel--full">
+      <h2>Resumo</h2>
+      <div class="kpis">
+        <div class="kpi"><div class="kpi-title">Saldo</div><div class="kpi-value" id="kpiSaldo">R$ 0,00</div></div>
+        <div class="kpi"><div class="kpi-title">Receitas (mês)</div><div class="kpi-value" id="kpiReceitasMes">R$ 0,00</div></div>
+        <div class="kpi"><div class="kpi-title">Despesas (mês)</div><div class="kpi-value" id="kpiDespesasMes">R$ 0,00</div></div>
+      </div>
+      <div class="chart-wrap"><canvas id="graficoFluxo"></canvas></div>
+    </section>
+
+    <section class="panel panel--full">
+      <h2>Lançamentos</h2>
+      <div class="row" style="margin-bottom:8px;gap:8px">
+        <button id="btnNovoLancamento" class="btn btn--primary">Novo lançamento…</button>
+      </div>
+
+      <div class="toolbar">
+        <input type="text" id="filtro" placeholder="Filtrar por descrição, conta, categoria…">
+      </div>
+
+      <div class="table-wrap">
+        <table class="table" id="tabela">
+          <thead>
+            <tr>
+              <th>Data</th><th>Venc.</th><th>Tipo</th><th>Descrição</th>
+              <th>Conta</th><th>Categoria</th><th>Documento</th><th>Forma</th>
+              <th>Valor</th><th>Parcela</th><th>Status</th><th>Obs</th><th></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="js/app.js"></script>
+
+  <!-- ===================== MODAL: Configurações ===================== -->
+  <dialog id="dlgConfig" class="dialog">
+    <form id="formConfig" class="dialog-body">
+      <h2>Configurações</h2>
+
+      <section class="panel panel--full">
+        <h2>Saldo inicial (R$)</h2>
+        <input type="number" step="0.01" id="cfgSaldoInicial" placeholder="0,00">
+      </section>
+
+      <section class="panel panel--full">
+        <h2>Salário</h2>
+        <!-- IMPORTANTE: type="button" para não submeter o form de Config -->
+        <button id="btnSalario" type="button" class="btn btn--primary">Lançar salário mensal…</button>
+        <p class="muted small">Gera RECEITAS recorrentes (categoria SALÁRIO).</p>
+      </section>
+
+      <h3 style="margin-top:12px">Cadastro rápido</h3>
+      <div class="grid grid--2">
+        <section class="panel panel--full">
+          <label class="muted small">Contas bancárias</label>
+          <div id="listaContas" class="list-compact"></div>
+          <div class="row" style="gap:8px;margin-top:8px">
+            <input type="text" id="novaConta" placeholder="NOME / AGÊNCIA / CONTA">
+            <button id="addConta" class="btn btn--primary">Adicionar</button>
+          </div>
+        </section>
+        <section class="panel panel--full">
+          <label class="muted small">Categorias</label>
+          <div id="listaCategorias" class="list-compact"></div>
+          <div class="row" style="gap:8px;margin-top:8px">
+            <input type="text" id="novaCategoria" placeholder="NOVA CATEGORIA">
+            <button id="addCategoria" class="btn btn--primary">Adicionar</button>
+          </div>
+        </section>
+      </div>
+
+      <div class="row right" style="margin-top:12px">
+        <!-- Cancelar sem validar campos -->
+        <button type="button" id="cfgCancelar" class="btn">Cancelar</button>
+        <button type="submit" class="btn btn--primary">Salvar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ===================== MODAL: Novo Lançamento ===================== -->
+  <dialog id="dlgLancamento" class="dialog dialog--wide">
+    <form method="dialog" id="formLancamento" class="dialog-body grid grid--4">
+      <h2>Novo lançamento</h2>
+      <label>Data
+        <input type="date" id="data" required>
+      </label>
+      <label>Vencimento
+        <input type="date" id="vencimento">
+      </label>
+      <label>Tipo
+        <select id="tipo" required>
+          <option value="RECEITA">RECEITA</option>
+          <option value="DESPESA">DESPESA</option>
+        </select>
+      </label>
+      <label>Descrição
+        <input type="text" id="descricao" placeholder="EX.: FATURA, ALUGUEL…" required>
+      </label>
+      <label>Conta bancária
+        <select id="conta"></select>
+      </label>
+      <label>Categoria
+        <select id="categoria"></select>
+      </label>
+      <label>Documento
+        <input type="text" id="documento" placeholder="EX.: NF, BOLETO, PIX">
+      </label>
+      <label>Forma de pagamento
+        <select id="forma">
+          <option>PIX</option>
+          <option>Dinheiro</option>
+          <option>Cartão Crédito</option>
+          <option>Cartão Débito</option>
+          <option>Boleto</option>
+          <option>TED/DOC</option>
+          <option>Outro</option>
+        </select>
+      </label>
+      <label>Valor
+        <input type="number" step="0.01" id="valor" required>
+      </label>
+      <label>Parcelas (ex.: 3 para 3/3)
+        <input type="number" min="1" step="1" id="parcelas" value="1">
+      </label>
+      <label>Status
+        <select id="status">
+          <option value="ABERTO">ABERTO</option>
+          <option value="PAGO/RECEBIDO">PAGO/RECEBIDO</option>
+          <option value="ATRASADO">ATRASADO</option>
+        </select>
+      </label>
+      <label>Observação
+        <input type="text" id="obs" placeholder="NOTAS ADICIONAIS">
+      </label>
+      <div class="grid-row-actions" style="grid-column: 1 / -1;">
+        <button type="button" id="lancCancelar" class="btn">Cancelar</button>
+        <button type="submit" class="btn btn--primary">Salvar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ===================== MODAL: Salário Mensal ===================== -->
+  <dialog id="dlgSalario" class="dialog">
+    <form id="formSalario" class="dialog-body grid grid--6 grid--compact">
+      <h2>Salário Mensal (recorrente)</h2>
+      <label>Dia do pagamento
+        <input type="number" id="salDia" min="1" max="31" placeholder="DIA" required>
+      </label>
+      <label>Valor do salário
+        <input type="number" step="0.01" id="salValor" placeholder="0,00" required>
+      </label>
+      <label>Conta bancária
+        <select id="salConta"></select>
+      </label>
+      <label>Forma de recebimento
+        <select id="salForma">
+          <option>PIX</option>
+          <option>Dinheiro</option>
+          <option>Cartão Crédito</option>
+          <option>Cartão Débito</option>
+          <option>Boleto</option>
+          <option>TED/DOC</option>
+          <option>Outro</option>
+        </select>
+      </label>
+      <label>Empresa
+        <input type="text" id="salEmpresa" placeholder="NOME DA EMPRESA">
+      </label>
+      <label>Meses
+        <select id="salQtdMeses">
+          <option value="6">6</option>
+          <option value="12" selected>12</option>
+          <option value="24">24</option>
+        </select>
+      </label>
+      <div class="grid-row-actions" style="grid-column: 1 / -1;">
+        <button type="button" id="salCancelar" class="btn">Cancelar</button>
+        <button type="submit" class="btn btn--primary">Gerar lançamentos</button>
+      </div>
+    </form>
+  </dialog>
+</body>
+</html>
