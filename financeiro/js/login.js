@@ -47,8 +47,8 @@ form.addEventListener('submit', async (e) => {
     if (hash !== hashCSV) return showMsg(msg, 'Senha incorreta.');
 
     // após autenticar:
-    localStorage.setItem('cpf', cpfNormalizado);
-    sessionStorage.setItem('cpf', cpfNormalizado);
+    localStorage.setItem('cpf', cpf);
+    sessionStorage.setItem('cpf', cpf);
     location.href = 'app.html';
   } catch (e) {
     showMsg(msg, (e && e.message) ? e.message : 'Erro no login.');
