@@ -348,10 +348,22 @@ function renderChart() {
 const autoSave = debounce(async () => { await saveCSV(); }, 700);
 
 async function loadCSV() {
-  const dir = await ensureDirHandle(true);
   const filename = `${cpf}.csv`;
+  const dirBd = await ensureDirHandle(true);
   const text = await readTextFileIfExists(dir, filename);
-  if (!text) return;
+  
+  if (!text) {
+    const dirRoot = await ensureDirHandle(false);
+    text = await readTextFileIfExists(dirRoot, filename);
+    if (text) {
+      // migra para /bd
+      await writeTextFile(dirBd, filename, text);
+      // opcional: remover da raiz
+      // await dirRoot.removeEntry(filename).catch(() => {});
+    } else {
+      return; // não existe ainda
+    }
+  }
 
   const rows = parseCSV(text);
   meta = rows[0];
@@ -394,16 +406,16 @@ async function loadCSV() {
 }
 
 async function saveCSV() {
-  const dir = await ensureDirHandle(true);
+  const dirBd = await ensureDirHandle(true); // sempre em /bd
   const rows = [];
   rows.push(meta);
-  rows.push(['date', 'vencimento', 'type', 'descricao', 'conta', 'categoria', 'documento', 'forma', 'valor', 'parcela', 'status', 'obs']);
+  rows.push(['date','vencimento','type','descricao','conta','categoria','documento','forma','valor','parcela','status','obs']);
   rows.push(['CONFIG', JSON.stringify(config)]);
-  (lancamentos || []).forEach(l => rows.push([
+  lancamentos.forEach(l => rows.push([
     l.date, l.vencimento, l.type, l.descricao, l.conta, l.categoria, l.documento, l.forma,
-    String(Number(l.valor || 0).toFixed(2)), l.parcela, l.status, l.obs
+    String(Number(l.valor||0).toFixed(2)), l.parcela, l.status, l.obs
   ]));
-  await writeTextFile(dir, `${cpf}.csv`, toCSV(rows));
+  await writeTextFile(dirBd, `${cpf}.csv`, toCSV(rows));
 }
 
 // ===== Eventos =====
